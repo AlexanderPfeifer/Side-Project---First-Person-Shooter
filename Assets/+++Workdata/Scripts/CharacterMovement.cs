@@ -24,6 +24,12 @@ public class CharacterMovement : MonoBehaviour
 
     [Header("SlopeCheck")]
     [SerializeField] float maxWalkableSlopeAngle;
+
+    [Header("Cam")] 
+    [SerializeField] Transform cameraFollowTransform;
+    [SerializeField] float sensitivity = 1;
+    float cameraPitch;
+    float cameraRoll;
     
 
     void Start()
@@ -36,6 +42,19 @@ public class CharacterMovement : MonoBehaviour
     void Update()
     {
         IsGrounded();
+
+        Look();
+    }
+
+    void Look()
+    {
+        Vector2 mouseDelta = Mouse.current.delta.ReadValue();
+
+        cameraPitch += mouseDelta.y * sensitivity;
+
+        cameraRoll += mouseDelta.x * sensitivity;
+
+        cameraFollowTransform.localEulerAngles = new Vector3(Mathf.Clamp(-cameraPitch, -80, 80), cameraRoll, 0f);
     }
 
     void FixedUpdate()
