@@ -30,6 +30,8 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] float sensitivity = 1;
     float cameraPitch;
     float cameraRoll;
+    [SerializeField] bool invertLookY;
+    [SerializeField] Transform visual;
     
 
     void Start()
@@ -46,6 +48,11 @@ public class CharacterMovement : MonoBehaviour
         Look();
     }
 
+    void FixedUpdate()
+    {
+        Move();
+    }
+
     void Look()
     {
         Vector2 mouseDelta = Mouse.current.delta.ReadValue();
@@ -54,14 +61,16 @@ public class CharacterMovement : MonoBehaviour
 
         cameraRoll += mouseDelta.x * sensitivity;
 
-        cameraFollowTransform.localEulerAngles = new Vector3(Mathf.Clamp(-cameraPitch, -80, 80), cameraRoll, 0f);
+        if (invertLookY) 
+        {
+            cameraFollowTransform.localEulerAngles = new Vector3(Mathf.Clamp(cameraPitch, -80, 80), cameraRoll, 0f);
+        }
+        else
+        {
+            cameraFollowTransform.localEulerAngles = new Vector3(Mathf.Clamp(-cameraPitch, -80, 80), cameraRoll, 0f);
+        }
     }
-
-    void FixedUpdate()
-    {
-        Move();
-    }
-
+    
     void Move()
     {
         if (!SlopeIsWalkable()) 
@@ -83,7 +92,18 @@ public class CharacterMovement : MonoBehaviour
     
     Vector3 ApplySpeed(float speed)
     {
-        return new Vector3(inputVector.x * speed, rb.velocity.y, inputVector.y * speed);
+        Vector3 movementDir = new Vector3(inputVector.x * speed, rb.velocity.y, inputVector.y * speed);
+
+        movementDir = Quaternion.AngleAxis(cameraFollowTransform.localEulerAngles.y, Vector3.up) * movementDir;
+
+        if (movementDir.x != 0 && movementDir.z != 0)
+        {
+            var lookDir = movementDir;
+            lookDir.y = 0f;
+            visual.rotation = Quaternion.LookRotation(lookDir);
+        }
+
+        return movementDir;
     }
 
     void OnMove(InputValue inputValue)
