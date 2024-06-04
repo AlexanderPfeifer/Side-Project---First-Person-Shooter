@@ -11,6 +11,5 @@ public class GameController : MonoBehaviour
     public void LooseGame()
     {
         SceneManager.LoadScene(0);
-        Debug.Log("Loose");
     }
 }
