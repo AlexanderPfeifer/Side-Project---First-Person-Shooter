@@ -5,7 +5,6 @@ public class EnemyBehaviour : MonoBehaviour
 {
     NavMeshAgent agent;
     Transform target;
-    private GameController gameController;
     public bool hasTarget;
     [SerializeField] private bool isRotating;
     [SerializeField] private float rotationSpeed;
@@ -14,7 +13,6 @@ public class EnemyBehaviour : MonoBehaviour
     {
         target = FindObjectOfType<CharacterMovement>().transform;
         agent = GetComponent<NavMeshAgent>();
-        gameController = FindObjectOfType<GameController>();
     }
 
     private void Update()
@@ -39,7 +37,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if (col.collider.tag == "Player")
         {
-            gameController.LooseGame();
+            GameController.Instance.LooseGame();
         }
     }
 }

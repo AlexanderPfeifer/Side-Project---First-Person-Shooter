@@ -1,15 +1,61 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class GameController : MonoBehaviour
 {
-    public void WinGame()
+    public static GameController Instance { private set; get; }
+    public bool clampCam;
+
+    private void Awake()
     {
-        Debug.Log("Win");
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
+
+    private void Start()
+    {
+        Time.timeScale = 0;
+        clampCam = false;
+    }
+
+    public void StartLevel()
+    {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Time.timeScale = 1;
+        clampCam = true;
+    }
+    
+    public void WinGame()
+    { 
+        FindObjectOfType<UILevel>().ShowWinScreen();
+        Time.timeScale = 0f;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     public void LooseGame()
     {
-        SceneManager.LoadScene(0);
+        FindObjectOfType<UILevel>().ShowLoseScreen();
+        Time.timeScale = 0f;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    public void ReloadLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void LoadMenu()
+    {
+        
     }
 }

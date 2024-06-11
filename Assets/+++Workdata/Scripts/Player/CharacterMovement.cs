@@ -37,8 +37,6 @@ public class CharacterMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
@@ -67,7 +65,14 @@ public class CharacterMovement : MonoBehaviour
         }
         else
         {
-            cameraFollowTransform.localEulerAngles = new Vector3(Mathf.Clamp(-cameraPitch, -80, 80), cameraRoll, 0f);
+            if (GameController.Instance.clampCam)
+            {
+                cameraFollowTransform.localEulerAngles = new Vector3(Mathf.Clamp(-cameraPitch, -10, 10), cameraRoll, 0f);
+            }
+            else
+            {
+                cameraFollowTransform.localEulerAngles = new Vector3(Mathf.Clamp(-cameraPitch, -80, 80), cameraRoll, 0f);
+            }
         }
     }
     
