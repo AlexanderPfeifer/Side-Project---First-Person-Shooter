@@ -53,21 +53,17 @@ public class CharacterMovement : MonoBehaviour
 
     void Look()
     {
-        Vector2 mouseDelta = Mouse.current.delta.ReadValue();
-
-        cameraPitch += mouseDelta.y * sensitivity;
-
-        cameraRoll += mouseDelta.x * sensitivity;
-
-        if (invertLookY) 
+        if (Time.timeScale != 0)
         {
-            cameraFollowTransform.localEulerAngles = new Vector3(Mathf.Clamp(cameraPitch, -80, 80), cameraRoll, 0f);
-        }
-        else
-        {
-            if (GameController.Instance.clampCam)
+            Vector2 mouseDelta = Mouse.current.delta.ReadValue();
+
+            cameraPitch += mouseDelta.y * sensitivity;
+
+            cameraRoll += mouseDelta.x * sensitivity;
+
+            if (invertLookY) 
             {
-                cameraFollowTransform.localEulerAngles = new Vector3(Mathf.Clamp(-cameraPitch, -10, 10), cameraRoll, 0f);
+                cameraFollowTransform.localEulerAngles = new Vector3(Mathf.Clamp(cameraPitch, -80, 80), cameraRoll, 0f);
             }
             else
             {
@@ -75,7 +71,7 @@ public class CharacterMovement : MonoBehaviour
             }
         }
     }
-    
+
     void Move()
     {
         if (!SlopeIsWalkable()) 
@@ -134,6 +130,11 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
+    void OnPause(InputValue inputValue)
+    {
+        FindObjectOfType<UILevel>().ShowPauseScreen();
+    }
+    
     bool IsGrounded()
     {
         return Physics.Raycast(rayStart.position, Vector3.down, rayLength, groundLayer);
@@ -149,5 +150,10 @@ public class CharacterMovement : MonoBehaviour
         var angle = Vector3.Angle(hit.normal, Vector3.up);
 
         return angle < maxWalkableSlopeAngle;
+    }
+
+    private void OnDestroy()
+    {
+        GameController.Instance.LooseGame();
     }
 }

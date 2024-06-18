@@ -71,6 +71,24 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""1e5a10a9-113e-400a-a1d3-4a4f95056101"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""6bd6bf6e-2b49-454f-94ac-a8c1bafc66a3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -216,6 +234,28 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9b6c3c6e-4a36-489d-8208-302767973be2"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""907f5000-0322-46a7-8571-a37a50bd119b"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -246,6 +286,8 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
         m_player_Sneak = m_player.FindAction("Sneak", throwIfNotFound: true);
         m_player_Sprint = m_player.FindAction("Sprint", throwIfNotFound: true);
         m_player_Look = m_player.FindAction("Look", throwIfNotFound: true);
+        m_player_Pause = m_player.FindAction("Pause", throwIfNotFound: true);
+        m_player_Shoot = m_player.FindAction("Shoot", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -312,6 +354,8 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
     private readonly InputAction m_player_Sneak;
     private readonly InputAction m_player_Sprint;
     private readonly InputAction m_player_Look;
+    private readonly InputAction m_player_Pause;
+    private readonly InputAction m_player_Shoot;
     public struct PlayerActions
     {
         private @InputMap m_Wrapper;
@@ -321,6 +365,8 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
         public InputAction @Sneak => m_Wrapper.m_player_Sneak;
         public InputAction @Sprint => m_Wrapper.m_player_Sprint;
         public InputAction @Look => m_Wrapper.m_player_Look;
+        public InputAction @Pause => m_Wrapper.m_player_Pause;
+        public InputAction @Shoot => m_Wrapper.m_player_Shoot;
         public InputActionMap Get() { return m_Wrapper.m_player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -345,6 +391,12 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
             @Look.started += instance.OnLook;
             @Look.performed += instance.OnLook;
             @Look.canceled += instance.OnLook;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
+            @Shoot.started += instance.OnShoot;
+            @Shoot.performed += instance.OnShoot;
+            @Shoot.canceled += instance.OnShoot;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -364,6 +416,12 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
             @Look.started -= instance.OnLook;
             @Look.performed -= instance.OnLook;
             @Look.canceled -= instance.OnLook;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
+            @Shoot.started -= instance.OnShoot;
+            @Shoot.performed -= instance.OnShoot;
+            @Shoot.canceled -= instance.OnShoot;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -397,5 +455,7 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
         void OnSneak(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
+        void OnShoot(InputAction.CallbackContext context);
     }
 }

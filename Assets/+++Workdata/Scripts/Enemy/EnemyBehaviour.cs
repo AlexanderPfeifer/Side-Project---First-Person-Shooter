@@ -29,6 +29,9 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if (hasTarget)
         {
+            if(target == null)
+                return;
+            
             agent.SetDestination(target.position);
         }
     }
@@ -37,7 +40,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if (col.collider.tag == "Player")
         {
-            GameController.Instance.LooseGame();
+            FindObjectOfType<CharacterMovement>().GetComponent<HealthSystem>().TakeDamage(1);
         }
     }
 }

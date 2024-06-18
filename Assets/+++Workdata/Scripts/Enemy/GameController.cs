@@ -1,12 +1,17 @@
+using Eflatun.SceneReference;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 public class GameController : MonoBehaviour
 {
     public static GameController Instance { private set; get; }
-    public bool clampCam;
 
+    [SerializeField] public SceneReference sceneMenu;
+
+    [SerializeField] public SceneReference[] scenesLevel;
+
+    private int currentSceneIndex;
+    
     private void Awake()
     {
         if (Instance != null)
@@ -17,36 +22,32 @@ public class GameController : MonoBehaviour
         {
             Instance = this;
         }
-    }
-
-    private void Start()
-    {
-        Time.timeScale = 0;
-        clampCam = false;
+        
+        DontDestroyOnLoad(this);
     }
 
     public void StartLevel()
     {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        Time.timeScale = 1;
-        clampCam = true;
+        TimeAndCursorLock(1, false, CursorLockMode.Locked);
     }
     
     public void WinGame()
     { 
         FindObjectOfType<UILevel>().ShowWinScreen();
-        Time.timeScale = 0f;
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        TimeAndCursorLock(0, true, CursorLockMode.None);
     }
 
     public void LooseGame()
     {
         FindObjectOfType<UILevel>().ShowLoseScreen();
-        Time.timeScale = 0f;
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        TimeAndCursorLock(0, true, CursorLockMode.None);
+    }
+
+    public void TimeAndCursorLock(int timeScale, bool cursorLockState, CursorLockMode cursorLockMode)
+    {
+        Time.timeScale = timeScale;
+        Cursor.visible = cursorLockState;
+        Cursor.lockState = cursorLockMode;
     }
 
     public void ReloadLevel()
@@ -56,6 +57,20 @@ public class GameController : MonoBehaviour
 
     public void LoadMenu()
     {
+        SceneManager.LoadScene(sceneMenu.BuildIndex);
+    }
+
+    public void LoadLevel(int listIndex)
+    {
+        SceneManager.LoadScene(scenesLevel[listIndex].BuildIndex);
+    }
+
+    public void LoadNextLevel()
+    {
+        var sceneToLoad = currentSceneIndex;
         
+        SceneManager.LoadScene(sceneToLoad < scenesLevel.Length
+            ? scenesLevel[sceneToLoad].BuildIndex
+            : sceneMenu.BuildIndex);
     }
 }
