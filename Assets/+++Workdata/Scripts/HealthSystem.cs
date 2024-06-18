@@ -12,6 +12,7 @@ public class HealthSystem : MonoBehaviour
         currentHealth = maxHealth;
     }
 
+    //Takes damage and when hp is at zero, then dies
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
@@ -24,6 +25,7 @@ public class HealthSystem : MonoBehaviour
         }
     }
 
+    //Updates the health ui of the player
     void HealthUIUpdate()
     {
         if (healthSlider != null)
@@ -32,8 +34,14 @@ public class HealthSystem : MonoBehaviour
         }
     }
 
+    //Object gets destroyed when no hp is left
     private void Die()
     {
+        if (TryGetComponent(out CharacterMovement characterMovement))
+        {
+            GameController.Instance.LooseGame();
+        }
+        
         Destroy(gameObject);
     }
 }

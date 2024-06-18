@@ -23,6 +23,7 @@ public class UILevel : MonoBehaviour
     [SerializeField] private Button buttonContinue;
     [SerializeField] private Button buttonBackToMainMenu2;
     
+    //Adds all methods according to the buttons
     void Start()
     {
         Time.timeScale = 0;
@@ -47,6 +48,7 @@ public class UILevel : MonoBehaviour
         buttonBackToMainMenu2.onClick.AddListener(GameController.Instance.LoadMenu);
     }
 
+    //Show pause screen and when pause screen is active, then pause screen deactivates again
     public void ShowPauseScreen()
     {
         if(!panelStart.interactable)
@@ -55,6 +57,7 @@ public class UILevel : MonoBehaviour
         if (!panelPause.interactable)
         {
             GameController.Instance.TimeAndCursorLock(0, true, CursorLockMode.None);
+            Debug.Log("hallo");
             panelPause.ShowCanvasGroup();
         }
         else
@@ -64,11 +67,13 @@ public class UILevel : MonoBehaviour
         }
     }
     
+    //shows the win screen
     public void ShowWinScreen()
     {
         panelWin.ShowCanvasGroup();
     }
 
+    //Shows the loose screen
     public void ShowLoseScreen()
     {
         panelLoose.ShowCanvasGroup();
@@ -77,6 +82,7 @@ public class UILevel : MonoBehaviour
 
 public static class ExtensionMethods
 {
+    //Extension for hiding a canvas
     public static void HideCanvasGroup(this CanvasGroup myCanvasGroup)
     {
         myCanvasGroup.alpha = 0;
@@ -84,6 +90,7 @@ public static class ExtensionMethods
         myCanvasGroup.blocksRaycasts = false;
     }
     
+    //Extension for showing a canvas
     public static void ShowCanvasGroup(this CanvasGroup myCanvasGroup)
     {
         myCanvasGroup.alpha = 1;

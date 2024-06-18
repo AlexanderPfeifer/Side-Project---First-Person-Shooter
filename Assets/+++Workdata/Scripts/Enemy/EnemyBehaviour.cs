@@ -19,12 +19,14 @@ public class EnemyBehaviour : MonoBehaviour
     {
         FollowPlayer();
 
+        //If bool isRotating is enabled, the enemy rotates around itself
         if (isRotating)
         {
             transform.Rotate(transform.up, rotationSpeed * Time.deltaTime);
         }
     }
 
+    //Follows the player when detected
     private void FollowPlayer()
     {
         if (hasTarget)
@@ -36,6 +38,7 @@ public class EnemyBehaviour : MonoBehaviour
         }
     }
 
+    //Subtracts hp from the player when colliding with it
     private void OnCollisionEnter(Collision col)
     {
         if (col.collider.tag == "Player")

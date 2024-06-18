@@ -6,9 +6,9 @@ using UnityEngine.UI;
 public class UIMenu : MonoBehaviour
 {
     [SerializeField] private Transform parentButtons;
-
     [SerializeField] private GameObject prefabButtonLevel;
 
+    //adds every level of the game inside a scrollbar
     private void Start()
     {
         var i = 0;
@@ -23,6 +23,7 @@ public class UIMenu : MonoBehaviour
         }
     }
 
+    //Starts first level 
     public void Play()
     {
         GameController.Instance.LoadNextLevel();

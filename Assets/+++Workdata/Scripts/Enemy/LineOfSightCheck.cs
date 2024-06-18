@@ -10,6 +10,7 @@ public class LineOfSightCheck : MonoBehaviour
 
     private void Start() => enemyBehaviour = GetComponentInParent<EnemyBehaviour>();
     
+    //Starts detecting the player
     private void OnTriggerEnter(Collider col)
     {
         if (col.tag == "Player")
@@ -19,6 +20,7 @@ public class LineOfSightCheck : MonoBehaviour
         }
     }
 
+    //Stops detecting the player
     private void OnTriggerExit(Collider col)
     {
         if (col.tag == "Player")
@@ -28,6 +30,7 @@ public class LineOfSightCheck : MonoBehaviour
         }
     }
 
+    //Checks if enemy can detect player
     private IEnumerator DetectPlayer()
     {
         while (true)
@@ -49,6 +52,7 @@ public class LineOfSightCheck : MonoBehaviour
         }
     }
 
+    //Checks if character is covered by any blocks
     bool IsCharacterCovered(Vector3 targetDirection, float distanceToTarget)
     {
         RaycastHit[] hits = new RaycastHit[2];

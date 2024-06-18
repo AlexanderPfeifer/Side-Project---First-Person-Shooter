@@ -10202,6 +10202,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 419897435553941207, guid: ab34053d3fc46794386fafe43799e527, type: 3}
+      propertyPath: uiLevel
+      value: 
+      objectReference: {fileID: 20732408}
     - target: {fileID: 5280170468688702426, guid: ab34053d3fc46794386fafe43799e527, type: 3}
       propertyPath: healthSlider
       value: 
@@ -10276,13 +10280,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ammoText: {fileID: 1170060897}
+  maxAmmo: 16
+  maxReloadTime: 2
   enemyLayer:
     serializedVersion: 2
     m_Bits: 256
   mainCam: {fileID: 963194227}
   weaponDamage: 1
-  maxAmmo: 16
-  maxReloadTime: 2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

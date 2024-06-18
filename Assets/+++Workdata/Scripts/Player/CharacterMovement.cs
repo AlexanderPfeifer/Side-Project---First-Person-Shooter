@@ -21,6 +21,7 @@ public class CharacterMovement : MonoBehaviour
     
     [Header("Components")]
     Rigidbody rb;
+    [SerializeField] UILevel uiLevel;
 
     [Header("SlopeCheck")]
     [SerializeField] float maxWalkableSlopeAngle;
@@ -51,6 +52,7 @@ public class CharacterMovement : MonoBehaviour
         Move();
     }
 
+    //Lets the camera rotate depending on mouse movement
     void Look()
     {
         if (Time.timeScale != 0)
@@ -72,6 +74,7 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
+    //Applies speed according to state of movement and which button is 
     void Move()
     {
         if (!SlopeIsWalkable()) 
@@ -91,6 +94,7 @@ public class CharacterMovement : MonoBehaviour
         }
     }
     
+    //Applies speed on the individual vectors and moves in the direction where the player is looking
     Vector3 ApplySpeed(float speed)
     {
         Vector3 movementDir = new Vector3(inputVector.x * speed, rb.velocity.y, inputVector.y * speed);
@@ -107,21 +111,25 @@ public class CharacterMovement : MonoBehaviour
         return movementDir;
     }
 
+    //gets the move vector of WASD input
     void OnMove(InputValue inputValue)
     {
         inputVector = inputValue.Get<Vector2>();
     }
     
+    //Slows down character
     void OnSneak(InputValue inputValue)
     {
         isSneaking = !isSneaking;
     }
 
+    //Lets character sprint
     void OnSprint(InputValue inputValue)
     {
         isSprinting = !isSprinting;
     }
     
+    //Lets character jump
     void OnJump(InputValue inputValue)
     {
         if (IsGrounded())
@@ -130,16 +138,19 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
+    //pauses the game and unpauses it when already paused
     void OnPause(InputValue inputValue)
     {
-        FindObjectOfType<UILevel>().ShowPauseScreen();
+        uiLevel.ShowPauseScreen();
     }
     
+    //Checks if character is on ground
     bool IsGrounded()
     {
         return Physics.Raycast(rayStart.position, Vector3.down, rayLength, groundLayer);
     }
 
+    //When slopes are too high, they are not walkable anymore
     bool SlopeIsWalkable()
     {
         Physics.Raycast(rayStart.position, Vector3.down, out var hit, rayLength, groundLayer);
@@ -150,10 +161,5 @@ public class CharacterMovement : MonoBehaviour
         var angle = Vector3.Angle(hit.normal, Vector3.up);
 
         return angle < maxWalkableSlopeAngle;
-    }
-
-    private void OnDestroy()
-    {
-        GameController.Instance.LooseGame();
     }
 }

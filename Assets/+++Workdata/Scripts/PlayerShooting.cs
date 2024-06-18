@@ -4,17 +4,21 @@ using UnityEngine.InputSystem;
 
 public class PlayerShooting : MonoBehaviour
 {
+    [Header("Ammo")]
     [SerializeField] private TextMeshProUGUI ammoText;
-    [SerializeField] private LayerMask enemyLayer;
-    [SerializeField] private Camera mainCam;
-
-    [SerializeField] private int weaponDamage;
     private int currentAmmo;
     [SerializeField] private int maxAmmo = 16;
     private bool reload;
     private float currentReloadTime;
     [SerializeField] private float maxReloadTime = 2;
+
+    [Header("Enemy")]
+    [SerializeField] private LayerMask enemyLayer;
     private HealthSystem enemyHealthSystem;
+
+    [Header("Weapon")]
+    [SerializeField] private Camera mainCam;
+    [SerializeField] private int weaponDamage;
 
     private void Start()
     {
@@ -24,6 +28,7 @@ public class PlayerShooting : MonoBehaviour
 
     private void Update()
     {
+        //When no ammo is left, then reloads for some seconds
         if (reload)
         {
             currentReloadTime += Time.deltaTime;
@@ -37,6 +42,7 @@ public class PlayerShooting : MonoBehaviour
             }
         }
         
+        //Checks if raycast hits enemy
         if(Physics.Raycast(mainCam.transform.position, mainCam.transform.forward, out var enemyHit, float.MaxValue, enemyLayer))
         {
             if (enemyHit.transform.TryGetComponent(out HealthSystem healthSystem))
@@ -50,6 +56,7 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
+    //substracts ammo, sets the ui accordingly and lets enemy take damage when left click is pressed
     void OnShoot(InputValue inputValue)
     {
         if (Time.timeScale <= 0 || reload)
