@@ -1,22 +1,22 @@
 Scene that has to be opened first:
-MainMenu 
+- MainMenu 
 
 Used packages:
-Cinemachine
-Input System
-TextMeshPro
-AI Navigation
-Eflatun.SceneReference
+- Cinemachine
+- Input System
+- TextMeshPro
+- AI Navigation
+- Eflatun.SceneReference
 
-Fulfilled mechanics and where you can find them:
--Shootmechanic:
+Mechanics and where you can find them:
+- Shootmechanic:
 Assets -> Workdata+++ -> Scripts -> PlayerShooting
 (Only for player, Scene: Level1 + Level2)
 
--Reload:
+- Reload:
 Assets -> Workdata+++ -> Scripts -> PlayerShooting
 (Only for player, Scene: Level1 + Level2)
 
--Healthsystem:
+- Healthsystem:
 Assets -> Workdata+++ -> Scripts -> HealthSystem
 (For player and for enemy, Scene: Level1 + Level2)
