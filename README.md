@@ -1,6 +1,3 @@
-Scene that has to be opened first:
-- MainMenu 
-
 Used packages:
 - Cinemachine
 - Input System
